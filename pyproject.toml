@@ -1,0 +1,115 @@
+[tool.poetry]
+name = "fastapi-base"
+package-mode = false
+version = "1.0.0"
+authors = ["Gleb Mikhalev <mikhalev.g@partner.samsung.com>"]
+
+
+[tool.poetry.dependencies]
+python = "^3.13"
+fastapi = {extras = ["all"], version = "^0.116.1"}
+uvicorn = {extras = ["standart"], version = "^0.35.0"}
+passlib = "^1.7.4"
+bcrypt = "^4.3.0"
+pyjwt = "^2.10.1"
+fastapi-limiter = "^0.1.6"
+redis = "^6.2.0"
+asyncpg = "^0.30.0"
+sqlalchemy = "^2.0.42"
+pydantic-settings = "^2.10.1"
+alembic = "^1.16.4"
+loguru = "^0.7.3"
+
+
+[tool.poetry.group.lint.dependencies]
+ruff = ">=0.11"
+
+
+[tool.poetry.group.test.dependencies]
+pytest = "^8.4"
+pytest-cov = "^6.1"
+pytest-randomly = "^3.16"
+pytest-xdist = "^3.7"
+pytest-asyncio = "^1.0"
+covdefaults = "^2.3"
+
+
+[tool.ruff]
+# Ruff config: https://docs.astral.sh/ruff/settings
+line-length = 100
+target-version = "py313"
+exclude = [
+    "alembic/",
+    "tests/",
+]
+
+
+[tool.ruff.format]
+preview = true
+quote-style = "double"
+docstring-code-format = true
+
+
+[tool.ruff.lint]
+preview = true
+select = ["ALL"]
+allowed-confusables = []
+ignore = [
+    "D203",     # blank line before class docstring (-> D211)
+    "D212",     # docstring starts from the first line (-> D213)
+    "COM812",   # missing trailing comma (due to ruff conflict)
+    "CPY001",   # copyright notice
+    "D100",     # docstring in public module
+    "D101",     # Missing docstring in public class
+    "D104",     # docstring in public package
+    "RUF029",   # Function is declared `async`, but doesn't `await` or use `async` features
+]
+
+
+[tool.ruff.lint.pylint]
+allow-dunder-method-names = ["__tablename__"]
+
+
+[tool.ruff.lint.per-file-ignores]
+"app/core/exception_handlers.py" = [
+    "D103",     # Missing docstring in public function
+]
+"app/core/loggers.py" = [
+    "D103",     # Missing docstring in public function
+]
+"app/core/exceptions.py" = [
+    "D107",     # Missing docstring in `__init__`
+]
+
+
+[tool.pytest.ini_options]
+# Pytest config: http://doc.pytest.org/en/latest/customize.html
+testpaths = ["tests"]
+xfail_strict = true
+filterwarnings = ["error"]
+asyncio_mode = "strict"
+
+addopts = [
+    "--strict-config",
+    "--strict-markers",
+    "--doctest-modules",
+    # pytest-cov
+    "--cov=app",
+    "--cov-branch",
+    "--cov-report=term-missing:skip-covered",
+    "--cov-report=html",
+    "--cov-fail-under=0",
+    # pytest-xdist
+    "-n=auto",
+]
+
+
+[tool.coverage.run]
+# Coverage config: https://coverage.readthedocs.io/
+plugins = ["covdefaults"]
+omit  = []
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
