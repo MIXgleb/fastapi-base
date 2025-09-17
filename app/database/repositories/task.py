@@ -28,28 +28,6 @@ class TaskRepositoryBase(RepositoryBase[Task, TaskCreate, TaskUpdate, TaskFilter
         """
         raise NotImplementedError
 
-    @classmethod
-    @override
-    async def _filter_query(
-        cls,
-        query: Select[tuple[Task]],
-        filters: TaskFilters,
-        relation_id: int = -1,
-    ) -> Select[tuple[Task]]:
-        """
-        Filter the query by the specified search filter.
-
-        Args:
-            query (Select[tuple[Task]]): database query expression
-            filters (TaskFilters): task search filter
-            relation_id (int, optional): relationship user id. Defaults to -1.
-
-        Returns:
-            Select[tuple[Task]]: filtered query expression
-
-        """
-        raise NotImplementedError
-
 
 @final
 class TaskRepository(
