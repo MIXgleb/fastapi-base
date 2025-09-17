@@ -69,33 +69,13 @@ class RepositoryBase[Model, Create, Update, Filters](ABC):
     @abstractmethod
     async def read_all(self, filters: Filters) -> Sequence[Model]:
         """
-        Read all the items with the search filter.
+        Read all items with the search filter.
 
         Args:
             filters (Filters): item search filter
 
         Returns:
             Sequence[Model]: list of items
-
-        """
-        raise NotImplementedError
-
-    @classmethod
-    @abstractmethod
-    async def _filter_query(
-        cls,
-        query: Select[tuple[Model]],
-        filters: Filters,
-    ) -> Select[tuple[Model]]:
-        """
-        Filter the query by the specified search filter.
-
-        Args:
-            query (Select[tuple[Model]]): database query expression
-            filters (Filters): item search filter
-
-        Returns:
-            Select[tuple[Model]]: filtered query expression
 
         """
         raise NotImplementedError
@@ -163,10 +143,21 @@ class SqlAlchemyRepositoryBase[
         return result.all()
 
     @classmethod
-    @override
     async def _filter_query(
         cls,
         query: Select[tuple[Model]],
         filters: Filters,
     ) -> Select[tuple[Model]]:
+        """
+        Filter the query by the specified search filter.
+
+        Args:
+            query (Select[tuple[Model]]): database query expression
+            filters (Filters): item search filter
+
+        Returns:
+            Select[tuple[Model]]: filtered query expression
+
+        """
+        _ = filters
         return query

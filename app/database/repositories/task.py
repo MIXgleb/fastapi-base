@@ -13,7 +13,7 @@ class TaskRepositoryBase(RepositoryBase[Task, TaskCreate, TaskUpdate, TaskFilter
     @override
     async def read_all(self, filters: TaskFilters, relation_id: int = -1) -> Sequence[Task]:
         """
-        Read all the tasks with the search filter.
+        Read all tasks with the search filter.
 
         Args:
             filters (TaskFilters): task search filter
